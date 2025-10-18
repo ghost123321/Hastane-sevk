@@ -2,7 +2,7 @@ const CACHE_NAME = 'hastene-cache-v1';
 const urlsToCache = [
   '/',
   '/manifest.json',
-  'https://cdn-icons-png.flaticon.com/512/2965/2965567.png'
+  'https://img.icons8.com/?size=100&id=48517&format=png&color=FAB005'
 ];
 
 self.addEventListener('install', event => {
