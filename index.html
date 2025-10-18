@@ -9,9 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#050822">
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965567.png"> <!-- Hastane ikonu -->
-
-<!-- Manifest -->
+<link rel="icon" href="https://img.icons8.com/?size=100&id=48517&format=png&color=FAB005">
 <link rel="manifest" href="manifest.json">
 
 <style>
@@ -35,6 +33,82 @@
 
   iframe {
     width:100%; height:100%;
+    border:none;
+    opacity:0;
+  }
+
+  /* Ön katman overlay */
+  #overlay {
+    position:absolute; top:0; left:0;
+    width:100%; height:100%;
+    background-color: rgba(5,8,34,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:10;
+  }
+
+  /* Spinner animasyonu */
+  .spinner {
+    width:80px; height:80px;
+    border-radius:50%;
+    background: conic-gradient(#FAB005 0% 25%, #f0c04a 25% 50%, #FAB005 50% 75%, #f0c04a 75% 100%);
+    animation: spin 1s linear infinite;
+    box-shadow:0 0 20px #FAB005;
+    margin-bottom:20px;
+  }
+
+  @keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+  #loadingText {color:#FAB005;font-size:18px;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<div id="overlay">
+  <div class="spinner"></div>
+  <div id="loadingText">Yükleniyor...</div>
+</div>
+
+<div id="iframeContainer">
+  <iframe src="https://script.google.com/macros/s/AKfycbxrwJqbx8UDdIUqMixFKXEdt1Mnpu_SVWSF5jBv2KFRPnTN44AjeOTLJeneoONvFF92ZA/exec"></iframe>
+</div>
+
+<script>
+  const overlay = document.getElementById('overlay');
+  const iframeContainer = document.getElementById('iframeContainer');
+  const iframe = iframeContainer.querySelector('iframe');
+
+  // Spinner ve fade-in açılma durumu
+  iframe.style.opacity = "0";
+  let iframeLoaded = false;
+
+  iframe.addEventListener('load', () => {
+    iframeLoaded = true;
+    setTimeout(showIframe, 300); // yumuşak fade-in
+  });
+
+  setTimeout(() => { if(!iframeLoaded) showIframe(); }, 2000);
+
+  function showIframe() {
+    overlay.style.display = 'none';
+    iframeContainer.classList.add('visible');
+    iframe.style.opacity = "1";
+  }
+
+  // Service Worker kaydı
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker kayıtlı:', reg))
+      .catch(err => console.log('Service Worker hatası:', err));
+    });
+  }
+</script>
+
+</body>
+</html>    width:100%; height:100%;
     border:none;
     opacity:0;
   }
